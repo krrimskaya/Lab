@@ -78,27 +78,9 @@ fetchBtn.addEventListener('click', async () => {
 
 fullscreenBtn.addEventListener("click", () => {
     if (galleryContainer.requestFullscreen) {
-        galleryContainer
-            .requestFullscreen()
+        galleryContainer.requestFullscreen()
             .then(() => {
                 galleryContainer.classList.add("fullscreen-active");
-
-                // Додаємо кнопку для виходу з повноекранного режиму
-                const exitButton = document.createElement("button");
-                exitButton.textContent = "Exit Fullscreen";
-                exitButton.classList.add("fullscreen-exit-btn");
-                document.body.appendChild(exitButton);
-
-                // Вихід із повноекранного режиму
-                exitButton.addEventListener("click", () => {
-                    if (document.exitFullscreen) {
-                        document
-                            .exitFullscreen()
-                            .catch((err) =>
-                                console.error("Помилка при виході з повноекранного режиму:", err)
-                            );
-                    }
-                });
             })
             .catch((err) =>
                 console.error("Помилка при вході в повноекранний режим:", err)
@@ -106,15 +88,12 @@ fullscreenBtn.addEventListener("click", () => {
     }
 });
 
-document.addEventListener('fullscreenchange', () => {
-    if(!document.fullscreenElement){
-        galleryContainer.classList.remove('fullscreen-active');
-        const exitButton = document.querySelector('.fullscreen-exit-btn');
-        if(exitButton){
-            exitButton.remove();
-        }
+document.addEventListener("fullscreenchange", () => {
+    if (!document.fullscreenElement) {
+        galleryContainer.classList.remove("fullscreen-active");
     }
 });
+
 
 if("geolocation" in navigator){
     navigator.geolocation.getCurrentPosition((position) => {

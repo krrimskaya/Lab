@@ -7,15 +7,20 @@ body{
     display: flex;
     justify-content: flex-start;
 }
-.gallery{
+.gallery {
     display: grid;
     grid-template-columns: repeat(4, 150px);
+    grid-auto-rows: 150px;
+    gap: 0;
 }
-.gallery img{
+
+.gallery img {
     width: 150px;
     height: 150px;
     object-fit: cover;
+    margin: 0;
 }
+
 button{
     padding: 10px 10px;
     margin: 10px;
@@ -25,7 +30,16 @@ button{
 }
 .fullscreen-active{
     background-color: lightpink;
-    animation: fade-in 0.5s ease-in-out;
+}
+.fullscreen-active .gallery {
+    display: grid;
+    grid-template-columns: repeat(4, 150px);
+    grid-auto-rows: 150px;
+    gap: 0;
+}
+
+.fullscreen-active .gallery img {
+    margin: 0;
 }
 @keyframes fadeIn {
     from {
