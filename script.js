@@ -31,25 +31,6 @@ const timerDisplay = document.getElementById('timer');
 
 const timer = new Timer(timerDisplay);
 
-/*
-function updateTimer(){
-    const minutes = Math.floor(timeSpent / 60);
-    const seconds = timeSpent % 60;
-    timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-}
-
-function startTimer(){
-    timerInterval = setInterval(() => {
-        timeSpent++;
-        updateTimer();
-    }, 1000);
-}
-
-function stopTimer(){
-    clearInterval(timerInterval);
-}
-*/
-
 document.addEventListener('visibilitychange', () => {
     if(document.hidden){
         timer.stop();
