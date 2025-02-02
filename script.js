@@ -94,23 +94,31 @@ document.addEventListener("fullscreenchange", () => {
     }
 });
 
+class Geolocation {
+    constructor(displayElement) {
+        this.displayElement = displayElement;
+    }
 
-if("geolocation" in navigator){
-    navigator.geolocation.getCurrentPosition((position) => {
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
+    startTracking(){
+        if("geolocation" in navigator){
+            navigator.geolocation.getCurrentPosition(
+                (position) => this.updateLocation(position),
+                (error) => alert("Не вдалося отримати ваше місцезнаходження.")
+            );
+            navigator.geolocation.watchPosition((position) => this.updateLocation(position));
+        }
+        else{
+            alert("Geolocation API не підтримується вашим браузером.");
+        }
+    }
 
-        const locationDiv = document.getElementById('location');
-        locationDiv.textContent = `${latitude.toFixed(4)}${longitude.toFixed(4)}`;
-
-        navigator.geolocation.watchPosition((position) => {
-            const newLatitude = position.coords.latitude;
-            const newLongitude = position.coords.longitude;
-            locationDiv.textContent = `${newLatitude.toFixed(4)}${newLongitude.toFixed(4)}`;
-        });
-    }, (error) => {
-        alert("Не вдалося отримати ваше місцезнаходження.")
-    });
-} else{
-    alert("Geolocation API не підтримується вашим браузером.");
+    updateLocation(position) {
+        const latitude = position.coords.latitude.toFixed(4);
+        const longitude = position.coords.longitude.toFixed(4);
+        this.displayElement.textContent = `${latitude}${longitude}`;
+    }
 }
+
+const locationDiv = document.getElementById('location');
+const geolocation = new Geolocation(locationDiv);
+geolocation.startTracking();
