@@ -57,24 +57,43 @@ function saveGalleryToLocalStorage(){
     localStorage.setItem('galleryImages', JSON.stringify(images));
 }
 
-fetchBtn.addEventListener('click', async () => {
+async function fetchRandomImage(){
     try{
         const response = await fetch('https://dog.ceo/api/breeds/image/random');
         const data = await response.json();
+        return data;
+    }
+    catch(error){
+        console.error("Помилка Fetch API:", error);
+        throw new Error("Щось пішло не так. Перевірте консоль!");
+    }
+}
 
-        if(data.status === "success"){
-            const img = document.createElement('img');
-            img.src = data.message;
-            gallery.appendChild(img);
+function updateGalleryWithImage(imageUrl)
+{
+    const img = document.createElement('img');
+    img.src = imageUrl;
+    gallery.appendChild(img);
+}
+
+async function handleFetchButtonClick(){
+    try{
+        const imageData = await fetchRandomImage();
+
+        if(imageData.status === "success"){
+            updateGalleryWithImage(imageData.message);
             saveGalleryToLocalStorage();
-        } else{
+        }
+        else{
             alert("Не вдалося завантажити зображення.");
         }
-    } catch(error){
-        console.error("Помилка Fetch API:", error);
-        alert("Щось пішло не так. Перевірте консоль");
     }
-});
+    catch(error){
+        alert(error.message);
+    }
+}
+
+fetchBtn.addEventListener('click', handleFetchButtonClick);
 
 fullscreenBtn.addEventListener("click", () => {
     if (galleryContainer.requestFullscreen) {
