@@ -1,3 +1,7 @@
+// Виправлення:
+// 1. Створення загальної функції для геолокації для уникнення дублювання.
+// 2. Покращене форматування часу за допомогою padStart().
+
 const gallery = document.getElementById('gallery');
 const galleryContainer = document.getElementById('gallery-container');
 const fetchBtn = document.getElementById('fetch-btn');
@@ -8,9 +12,8 @@ let timerInterval;
 let timeSpent = 0;
 
 function updateTimer(){
-    const minutes = Math.floor(timeSpent / 60);
-    const seconds = timeSpent % 60;
-    timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+    // Покращене форматування: використано padStart() для секунд
+    timerDisplay.textContent = `${Math.floor(timeSpent / 60)}:${String(timeSpent % 60).padStart(2, '0')}`;
 }
 
 function startTimer(){
@@ -50,7 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Галерея порожня.');
     }
 });
-
 
 function saveGalleryToLocalStorage(){
     const images = Array.from(gallery.querySelectorAll('img')).map(img => img.src);
@@ -94,23 +96,17 @@ document.addEventListener("fullscreenchange", () => {
     }
 });
 
+// Покращена геолокація: одна функція для оновлення місцезнаходження
+function updateLocation(position) {
+    const latitude = position.coords.latitude;
+    const longitude = position.coords.longitude;
+    const locationDiv = document.getElementById('location');
+    locationDiv.textContent = `${latitude.toFixed(4)} ${longitude.toFixed(4)}`;
+}
 
-if("geolocation" in navigator){
-    navigator.geolocation.getCurrentPosition((position) => {
-        const latitude = position.coords.latitude;
-        const longitude = position.coords.longitude;
-
-        const locationDiv = document.getElementById('location');
-        locationDiv.textContent = `${latitude.toFixed(4)}${longitude.toFixed(4)}`;
-
-        navigator.geolocation.watchPosition((position) => {
-            const newLatitude = position.coords.latitude;
-            const newLongitude = position.coords.longitude;
-            locationDiv.textContent = `${newLatitude.toFixed(4)}${newLongitude.toFixed(4)}`;
-        });
-    }, (error) => {
-        alert("Не вдалося отримати ваше місцезнаходження.")
-    });
-} else{
-    alert("Geolocation API не підтримується вашим браузером.");
+if ("geolocation" in navigator) {
+    navigator.geolocation.getCurrentPosition(updateLocation, () => alert("Couldn't get your location."));
+    navigator.geolocation.watchPosition(updateLocation);
+} else {
+    alert("Geolocation API is not supported by your browser.");
 }
