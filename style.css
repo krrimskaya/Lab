@@ -1,12 +1,14 @@
-body{
+body {
     font-family: Arial, Helvetica, sans-serif;
     margin: 0;
     padding: 10px;
 }
-.gallery-container{
+
+.gallery-container {
     display: flex;
     justify-content: flex-start;
 }
+
 .gallery {
     display: grid;
     grid-template-columns: repeat(4, 150px);
@@ -14,23 +16,8 @@ body{
     gap: 0;
 }
 
-.gallery img {
-    width: 150px;
-    height: 150px;
-    object-fit: cover;
-    margin: 0;
-}
-
-button{
-    padding: 10px 10px;
-    margin: 10px;
-    font-size: 15px;
-    cursor: pointer;
-    border: 1px solid black;
-}
-.fullscreen-active{
-    background-color: lightpink;
-}
+/* Fixed: Duplicate styles for .gallery and .fullscreen-active .gallery combined */
+.gallery,
 .fullscreen-active .gallery {
     display: grid;
     grid-template-columns: repeat(4, 150px);
@@ -38,18 +25,26 @@ button{
     gap: 0;
 }
 
-.fullscreen-active .gallery img {
+.gallery img {
+    width: 100%; /* Fixed: Changed to 100% to make the image flexible */
+    height: auto; /* Fixed: Adjusted height to auto for responsiveness */
+    object-fit: cover;
     margin: 0;
 }
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-    }
-    to{
-        opacity: 1;
-    }
+
+button {
+    padding: 10px 10px;
+    margin: 10px;
+    font-size: 15px;
+    cursor: pointer;
+    border: 1px solid black;
 }
-.fullscreen-exit-btn{
+
+.fullscreen-active {
+    background-color: lightpink;
+}
+
+.fullscreen-exit-btn {
     position: fixed;
     top: 10px;
     right: 10px;
@@ -59,7 +54,8 @@ button{
     cursor: pointer;
     z-index: 1000;
 }
-#timer{
+
+#timer {
     position: fixed;
     top: 10px;
     right: 10px;
@@ -67,11 +63,21 @@ button{
     font-size: 20px;
     z-index: 1000;
 }
-#location{
+
+#location {
     position: fixed;
     top: 10px;
     right: 90px;
     padding: 10px;
     font-size: 20px;
     z-index: 1000;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
